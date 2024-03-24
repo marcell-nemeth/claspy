@@ -336,9 +336,6 @@ class ClaSPEnsemble(ClaSP):
         self.early_stopping = early_stopping
         self.random_state = random_state
 
-        self.detected_change_points = []
-        self.detection_p_value = []
-
     def _calculate_temporal_constraints(self):
         """
         Calculates a set of random temporal constraints for each ClaSP in the ensemble.
@@ -435,9 +432,6 @@ class ClaSPEnsemble(ClaSP):
 
             if self.early_stopping is True and best_clasp.split(validation=validation, threshold=threshold) is not None:
                 break
-
-            self.detected_change_points.append(clasp.detected_change_points)
-            self.detection_p_value.append(clasp.detection_p_value)
 
         self.profile = np.full(shape=time_series.shape[0] - self.window_size + 1, fill_value=-np.inf, dtype=np.float64)
 

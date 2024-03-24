@@ -234,14 +234,14 @@ class BinaryClaSPSegmentation:
                 random_state=self.random_state
             ).fit(time_series, validation=self.validation, threshold=self.threshold)
 
-            self.detected_change_points.append(clasp.detected_change_points)
-            self.detection_p_value.append(clasp.detection_p_value)
-
             cp = clasp.split(validation=self.validation, threshold=self.threshold)
 
             if cp is not None:
                 self.clasp_tree.append((prange, clasp))
                 self.queue.put((-clasp.profile[cp], len(self.clasp_tree) - 1))
+                
+            self.detected_change_points.append(clasp.detected_change_points)
+            self.detection_p_value.append(clasp.detection_p_value)
 
             profile = clasp.profile
         else:

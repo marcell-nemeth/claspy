@@ -336,6 +336,9 @@ class ClaSPEnsemble(ClaSP):
         self.early_stopping = early_stopping
         self.random_state = random_state
 
+        self.detected_change_points = []
+        self.detection_p_value = []
+
     def _calculate_temporal_constraints(self):
         """
         Calculates a set of random temporal constraints for each ClaSP in the ensemble.

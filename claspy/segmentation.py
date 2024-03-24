@@ -94,7 +94,8 @@ class BinaryClaSPSegmentation:
         self.random_state = random_state
         self.is_fitted = False
 
-
+        self.detected_change_points = []
+        self.detection_p_value = []
 
         check_excl_radius(k_neighbours, excl_radius)
 

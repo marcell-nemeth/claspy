@@ -281,7 +281,7 @@ class ClaSP:
         if validation is not None:
             self.detected_change_points.append(cp)
             validation_test = map_validation_tests(validation)
-            p_value = validation_test(self, cp, threshold)
+            p_value = validation_test(self, cp)
             self.detection_p_value.append(p_value)
             if p_value > threshold: return None
 

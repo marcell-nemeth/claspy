@@ -272,6 +272,8 @@ class BinaryClaSPSegmentation:
         sorted_cp_args = np.argsort(change_points)
         self.change_points, self.scores = np.asarray(change_points)[sorted_cp_args], np.asarray(scores)[sorted_cp_args]
 
+        self.change_points_with_pvalue = sorted(self.change_points_with_pvalue, key=lambda x: x[0])
+
         profile[np.isinf(profile)] = np.nan
         self.profile = pd.Series(profile).interpolate(limit_direction="both").to_numpy()
 

@@ -94,6 +94,8 @@ class BinaryClaSPSegmentation:
         self.random_state = random_state
         self.is_fitted = False
 
+        self.change_points_with_pvalue = []
+
         check_excl_radius(k_neighbours, excl_radius)
 
     def _cp_is_valid(self, candidate, change_points):
@@ -254,6 +256,8 @@ class BinaryClaSPSegmentation:
 
             profile[lbound:ubound - self.window_size + 1] = np.max(
                 [profile[lbound:ubound - self.window_size + 1], clasp.profile], axis=0)
+
+            self.change_points_with_pvalue.append((cp, clasp.detection_p_value))
 
             change_points.append(cp)
             scores.append(-priority)

@@ -257,7 +257,7 @@ class BinaryClaSPSegmentation:
             profile[lbound:ubound - self.window_size + 1] = np.max(
                 [profile[lbound:ubound - self.window_size + 1], clasp.profile], axis=0)
 
-            self.change_points_with_pvalue.append((clasp.detected_change_point + lbound, clasp.detection_p_value))
+            self.change_points_with_pvalue.append((cp, clasp.detection_p_value))
 
             change_points.append(cp)
             scores.append(-priority)

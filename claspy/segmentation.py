@@ -94,8 +94,7 @@ class BinaryClaSPSegmentation:
         self.random_state = random_state
         self.is_fitted = False
 
-        self.detected_change_points = []
-        self.detection_p_value = []
+        self.change_points_with_pvalue = []
 
         check_excl_radius(k_neighbours, excl_radius)
 
@@ -239,9 +238,6 @@ class BinaryClaSPSegmentation:
             if cp is not None:
                 self.clasp_tree.append((prange, clasp))
                 self.queue.put((-clasp.profile[cp], len(self.clasp_tree) - 1))
-                
-            self.detected_change_points.append(clasp.detected_change_points)
-            self.detection_p_value.append(clasp.detection_p_value)
 
             profile = clasp.profile
         else:
@@ -261,6 +257,8 @@ class BinaryClaSPSegmentation:
             profile[lbound:ubound - self.window_size + 1] = np.max(
                 [profile[lbound:ubound - self.window_size + 1], clasp.profile], axis=0)
 
+            self.change_points_with_pvalue.append((clasp.detected_change_point + lbound, clasp.detection_p_value))
+
             change_points.append(cp)
             scores.append(-priority)
 
@@ -273,6 +271,8 @@ class BinaryClaSPSegmentation:
 
         sorted_cp_args = np.argsort(change_points)
         self.change_points, self.scores = np.asarray(change_points)[sorted_cp_args], np.asarray(scores)[sorted_cp_args]
+
+        self.change_points_with_pvalue = sorted(self.change_points_with_pvalue, key=lambda x: x[0])
 
         profile[np.isinf(profile)] = np.nan
         self.profile = pd.Series(profile).interpolate(limit_direction="both").to_numpy()

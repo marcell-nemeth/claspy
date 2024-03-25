@@ -125,8 +125,8 @@ class ClaSP:
         self.n_jobs = os.cpu_count() if n_jobs < 1 else n_jobs
         self.is_fitted = False
 
-        self.detected_change_points = []
-        self.detection_p_value = []
+        self.detected_change_point = None
+        self.detection_p_value = None
 
         check_excl_radius(k_neighbours, excl_radius)
 
@@ -279,10 +279,12 @@ class ClaSP:
         cp = np.argmax(self.profile)
 
         if validation is not None:
-            self.detected_change_points.append(cp)
             validation_test = map_validation_tests(validation)
             p_value = validation_test(self, cp)
-            self.detection_p_value.append(p_value)
+
+            self.detected_change_point = cp
+            self.detection_p_value = p_value
+            
             if p_value > threshold: return None
 
         if sparse is True:
